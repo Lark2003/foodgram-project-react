@@ -1,6 +1,6 @@
 name: Main Foodgram workflow
 
-on: workflow_dispatch
+on:
   push:
     branches:
       - main
