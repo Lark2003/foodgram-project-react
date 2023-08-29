@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from .models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                      ShoppingCart, Tag)
 
@@ -26,15 +25,17 @@ class IngredientAdmin(admin.ModelAdmin):
 
 class IngredientInline(admin.TabularInline):
     model = IngredientInRecipe
-    extra = 2
+    extra = 1
 
 
 class RecipeAdmin(admin.ModelAdmin):
     """Управление рецептами."""
     list_display = (
+        'id',
         'name',
         'author',
         'added_in_favorites',
+        'pub_date',
     )
     fields = (
         (
@@ -60,18 +61,9 @@ class RecipeAdmin(admin.ModelAdmin):
     filter_horizontal = ('tags',)
 
     def added_in_favorites(self, obj):
-        return obj.favorites.all().count()
+        return obj.favorites.count()
 
     added_in_favorites.short_description = 'Количество добавлений в избранное'
-
-
-class IngredientInRecipeAdmin(admin.ModelAdmin):
-    """Управление ингридиентами в рецептах."""
-    list_display = (
-        'ingredient',
-        'amount',
-    )
-    list_filter = ('ingredient',)
 
 
 class FavoriteAdmin(admin.ModelAdmin):
@@ -90,6 +82,5 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(IngredientInRecipe, IngredientInRecipeAdmin)
 admin.site.register(Favorite, FavoriteAdmin)
 admin.site.register(ShoppingCart, ShoppingCartAdmin)

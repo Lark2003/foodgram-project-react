@@ -7,8 +7,8 @@ app_name = 'api'
 
 router = DefaultRouter()
 
-router.register('ingredients', IngredientViewSet)
 router.register('tags', TagViewSet)
+router.register('ingredients', IngredientViewSet)
 router.register('recipes', RecipeViewSet)
 
 urlpatterns = [

@@ -45,7 +45,7 @@ class Ingredient(models.Model):
         verbose_name='Название ингредиента',
     )
     measurement_unit = models.CharField(
-        max_length=200,
+        max_length=20,
         verbose_name='Единица измерения'
     )
 
@@ -69,8 +69,7 @@ class Recipe(models.Model):
         User,
         verbose_name='Автор рецепта',
         related_name='recipes',
-        on_delete=models.SET_NULL,
-        null=True,
+        on_delete=models.CASCADE,
     )
     image = models.ImageField(
         blank=True,
@@ -84,7 +83,7 @@ class Recipe(models.Model):
         Ingredient,
         related_name='recipes',
         verbose_name='Ингредиенты в рецепте',
-        through='recipes.IngredientInRecipe',
+        through='IngredientInRecipe',
     )
     tags = models.ManyToManyField(
         Tag,
@@ -125,9 +124,8 @@ class IngredientInRecipe(models.Model):
         related_name='recipe',
         verbose_name='Ингредиенты в рецепте',
     )
-    amount = models.IntegerField(
+    amount = models.PositiveSmallIntegerField(
         verbose_name='Количество ингредиента',
-        default=0,
         validators=[
             MinValueValidator(1, 'Минимальное значение - 1')
         ],
