@@ -1,9 +1,10 @@
 from datetime import datetime
 
 from django.db.models import Sum
-from recipes.models import IngredientInRecipe
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
+
+from recipes.models import IngredientInRecipe
 
 
 def create_shoping_list(user):
