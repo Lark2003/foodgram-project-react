@@ -2,6 +2,7 @@ from core.services import create_shoping_list
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -14,7 +15,6 @@ from .permissions import IsAdminAuthorOrReadOnly
 from .serializers import (IngredientSerializer, RecipeCreateUpdateSerializer,
                           RecipeReadSerializer, RecipeShortSerializer,
                           TagSerializer)
-from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
 
 
 class TagViewSet(ReadOnlyModelViewSet):
