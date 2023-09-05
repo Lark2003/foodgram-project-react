@@ -53,6 +53,12 @@ class Ingredient(models.Model):
         ordering = ('name',)
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
+        constraints = (
+            UniqueConstraint(
+                fields=('name', 'measurement_unit'),
+                name='unique_for_ingredient',
+            ),
+        )
 
     def __str__(self):
         return f'{self.name}, {self.measurement_unit}'
@@ -115,13 +121,13 @@ class IngredientInRecipe(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         verbose_name='В каких рецептах',
-        related_name='ingredient',
+        related_name='recipe_ingredients',
         on_delete=models.CASCADE,
     )
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
-        related_name='recipe',
+        related_name='recipe_ingredients',
         verbose_name='Ингредиенты в рецепте',
     )
     amount = models.PositiveSmallIntegerField(
@@ -136,7 +142,7 @@ class IngredientInRecipe(models.Model):
         verbose_name_plural = 'Ингредиенты в рецепте'
         constraints = [
             UniqueConstraint(
-                fields=('ingredient', 'amount'),
+                fields=('recipe', 'ingredient'),
                 name='unique_ingredient_in_recipe'),
         ]
 

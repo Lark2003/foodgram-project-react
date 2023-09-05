@@ -4,7 +4,6 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from permissions import IsAdminAuthorOrReadOnly
 from recipes.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                             ShoppingCart, Tag)
 from rest_framework import status
@@ -16,6 +15,7 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from .filters import IngredientFilter, RecipeFilter
 from .pagination import CustomPagination
+from .permissions import IsAdminAuthorOrReadOnly
 from .serializers import (IngredientSerializer, RecipeCreateUpdateSerializer,
                           RecipeReadSerializer, RecipeShortSerializer,
                           TagSerializer)
@@ -57,9 +57,9 @@ class RecipeViewSet(ModelViewSet):
     def favorite(self, request, pk):
         """Метод для добавления/удаления из избранного."""
         if request.method == 'POST':
-            return self.add_to(Favorite, request.user, pk)
+            return self._add_to(Favorite, request.user, pk)
         else:
-            return self.delete_from(Favorite, request.user, pk)
+            return self._delete_from(Favorite, request.user, pk)
 
     @action(
         detail=True,
@@ -69,11 +69,11 @@ class RecipeViewSet(ModelViewSet):
     def shopping_cart(self, request, pk):
         """Метод для добавления/удаления из списка покупок."""
         if request.method == 'POST':
-            return self.add_to(ShoppingCart, request.user, pk)
+            return self._add_to(ShoppingCart, request.user, pk)
         else:
-            return self.delete_from(ShoppingCart, request.user, pk)
+            return self._delete_from(ShoppingCart, request.user, pk)
 
-    def add_to(self, model, user, pk):
+    def _add_to(self, model, user, pk):
         """Метод для добавления."""
         if model.objects.filter(user=user, recipe__id=pk).exists():
             return Response({'errors': 'Рецепт уже добавлен!'},
@@ -83,7 +83,7 @@ class RecipeViewSet(ModelViewSet):
         serializer = RecipeShortSerializer(recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def delete_from(self, model, user, pk):
+    def _delete_from(self, model, user, pk):
         """Метод для удаления."""
         obj = model.objects.filter(user=user, recipe__id=pk)
         if obj.exists():
