@@ -8,13 +8,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
 from .filters import IngredientFilter, RecipeFilter
 from .pagination import CustomPagination
 from .permissions import IsAdminAuthorOrReadOnly
 from .serializers import (IngredientSerializer, RecipeCreateUpdateSerializer,
                           RecipeReadSerializer, RecipeShortSerializer,
                           TagSerializer)
+from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
 
 
 class TagViewSet(ReadOnlyModelViewSet):

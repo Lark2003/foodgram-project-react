@@ -8,9 +8,9 @@ from rest_framework.fields import IntegerField, SerializerMethodField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import (CharField, ModelSerializer,
                                         ReadOnlyField)
-from users.models import Subscribe, User
 from recipes.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                             ShoppingCart, Tag)
+from users.models import Subscribe, User
 
 
 class TagSerializer(ModelSerializer):
