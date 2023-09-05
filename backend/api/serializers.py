@@ -8,10 +8,9 @@ from rest_framework.fields import IntegerField, SerializerMethodField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import (CharField, ModelSerializer,
                                         ReadOnlyField)
-
+from users.models import Subscribe, User
 from recipes.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                             ShoppingCart, Tag)
-from users.models import Subscribe, User
 
 
 class TagSerializer(ModelSerializer):
@@ -214,12 +213,10 @@ class RecipeCreateUpdateSerializer(ModelSerializer):
             ingredient = get_object_or_404(Ingredient, id=item['id'])
             if ingredient in ingredients_list:
                 raise ValidationError(
-                    'У рецепта не может быть два одинаковых ингредиента.'
-                )
+                    'У рецепта не может быть два одинаковых ингредиента.')
             if int(item['amount']) <= 0:
                 raise ValidationError(
-                        'Колличество ингредиента должно быть больше 0.'
-                )
+                    'Колличество ингредиента должно быть больше 0.')
         ingredients_list.append(ingredient)
         return value
 
