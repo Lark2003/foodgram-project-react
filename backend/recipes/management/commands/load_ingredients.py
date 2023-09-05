@@ -1,6 +1,7 @@
 import csv
 
 from django.core.management.base import BaseCommand
+
 from recipes.models import Ingredient
 
 
@@ -12,7 +13,7 @@ class Command(BaseCommand):
             'path_to_ingredients',
             type=str,
             help='По умолчанию ./data/ingredients.csv'
-            )
+        )
 
     def handle(self, *args, **options):
         file_path = options['path_to_ingredients']
